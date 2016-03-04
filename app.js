@@ -1,27 +1,20 @@
-/**
- * Created by Cezary on 2016-03-04.
- */
-
 ;(function () {
     "use strict";
 
-    var $ = window.jQuery;
-
-    var counter = 0;
-    var $noMore = $("<p></p>");
-    var endFlag;
-    $noMore.text("No more stories.");
+    var $ = window.jQuery,
+        counter = 0,
+        endFlag;
 
     $(document).ready(loadArticles);
-
     $(".loader").on("click", loadArticles);
 
     function loadArticles() {
+        var template,
+            responseObj,
+            templatePromise = $.Deferred(),
+            dataPromise = $.Deferred();
+
         $(".loading").css("display", "block");
-        var template;
-        var responseObj;
-        var templatePromise = $.Deferred();
-        var dataPromise = $.Deferred();
         $.get("data.json", function (response) {
             dataPromise.resolve(response);
         });
@@ -64,9 +57,7 @@
 
                 if (endFlag) {
                     $(".loading").css("display", "none");
-                    $(".textBox").append($noMore);
                     $(".loader").css("display", "none");
-                    return;
                 }
             });
     }
